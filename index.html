@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#0A0A0B"/>
+<title>FF Scout — by @Raj_op_360</title>
+<style>
+:root{
+  --bg:#0A0A0B;--bg2:#111113;--surface:#1C1C1E;--card:#18181B;--elevated:#2C2C2E;
+  --sep:rgba(255,255,255,0.07);--sep2:rgba(255,255,255,0.12);
+  --fire:#FF4500;--fire2:#FF6A00;--ember:#FF9500;--gold:#FFD60A;
+  --text:#F5F5F7;--t2:rgba(245,245,247,0.62);--t3:rgba(245,245,247,0.36);--t4:rgba(245,245,247,0.16);
+  --green:#30D158;--red:#FF453A;--blue:#0A84FF;--teal:#5AC8FA;--purple:#BF5AF2;
+  --r-xl:20px;--r-lg:16px;--r-md:12px;--r-pill:999px;
+  --fn:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fn);min-height:100vh;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  padding-bottom:max(40px,env(safe-area-inset-bottom));}
+body::before{content:'';position:fixed;top:-80px;left:50%;transform:translateX(-50%);
+  width:600px;height:500px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at top,rgba(255,106,0,0.08) 0%,transparent 65%);}
+
+/* ══ ISLAND ══ */
+.island-wrap{position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;justify-content:center;padding-top:11px;pointer-events:none;}
+.island{background:#000;border-radius:var(--r-pill);padding:9px 16px 9px 14px;
+  display:flex;align-items:center;gap:0;pointer-events:all;
+  min-width:210px;max-width:90vw;
+  box-shadow:0 2px 30px rgba(0,0,0,0.95),0 0 0 0.5px rgba(255,255,255,0.07);}
+.isl-left{display:flex;align-items:center;gap:8px;}
+.isl-flame{font-size:13px;animation:ifl 2.5s ease-in-out infinite alternate;}
+@keyframes ifl{0%{transform:scale(1) rotate(-2deg)}100%{transform:scale(1.2) rotate(2deg)}}
+.isl-brand{font-size:13px;font-weight:700;color:#fff;letter-spacing:0.2px;}
+.isl-sep{width:1px;height:14px;background:rgba(255,255,255,0.1);margin:0 10px;}
+.isl-dot{width:5px;height:5px;border-radius:50%;background:var(--fire2);
+  box-shadow:0 0 5px var(--fire2);animation:ipulse 2s ease infinite;flex-shrink:0;}
+@keyframes ipulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.7)}}
+.isl-right{margin-left:auto;padding-left:12px;text-align:right;}
+.isl-time{font-size:13px;font-weight:600;color:rgba(255,255,255,0.88);
+  font-variant-numeric:tabular-nums;letter-spacing:-0.3px;}
+.isl-date{font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px;}
+
+/* ══ LANG BTN ══ */
+.lang-btn{position:fixed;top:14px;right:14px;z-index:1001;
+  background:var(--elevated);border:1px solid var(--sep2);
+  border-radius:var(--r-pill);padding:5px 12px;
+  font-size:11px;font-weight:600;color:var(--t2);
+  cursor:pointer;font-family:var(--fn);transition:all .2s;}
+.lang-btn:hover{color:var(--text);}
+
+/* ══ PAGE ══ */
+.page{position:relative;z-index:1;max-width:430px;margin:0 auto;padding:82px 14px 32px;}
+
+/* ══ HERO ══ */
+.hero{text-align:center;padding:2px 0 24px;}
+.hero-eye{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;
+  color:var(--fire2);margin-bottom:10px;}
+.hero-title{font-size:clamp(28px,8vw,38px);font-weight:800;letter-spacing:-1.5px;
+  line-height:1.06;margin-bottom:8px;}
+.grad{background:linear-gradient(125deg,#FF4500 0%,#FF6A00 30%,#FF9500 65%,#FFD60A 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:13px;color:var(--t2);line-height:1.5;}
+
+/* ══ SEARCH ══ */
+.sbox{background:var(--surface);border-radius:var(--r-xl);padding:14px;
+  margin-bottom:10px;border:1px solid var(--sep);transition:border-color .3s;}
+.sbox:focus-within{border-color:rgba(255,106,0,0.3);}
+.seg-wrap{display:flex;gap:3px;background:var(--bg2);border-radius:var(--r-md);
+  padding:3px;margin-bottom:12px;}
+.seg{flex:1;padding:7px;border:none;border-radius:10px;font-size:12px;font-weight:600;
+  color:var(--t3);background:transparent;cursor:pointer;
+  font-family:var(--fn);transition:all .2s;}
+.seg.on{background:var(--elevated);color:var(--text);
+  box-shadow:0 1px 4px rgba(0,0,0,0.6);}
+.irow{display:flex;gap:8px;}
+.sinput{flex:1;background:var(--bg2);border:1px solid var(--sep2);
+  border-radius:var(--r-md);padding:12px 14px;color:var(--text);
+  font-size:15px;font-family:var(--fn);outline:none;-webkit-appearance:none;
+  transition:border-color .2s;caret-color:var(--fire2);}
+.sinput::placeholder{color:var(--t3);}
+.sinput:focus{border-color:rgba(255,106,0,0.4);}
+.sbtn{background:linear-gradient(145deg,var(--fire),var(--fire2));
+  border:none;border-radius:var(--r-md);width:46px;height:46px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:opacity .2s,transform .12s;
+  box-shadow:0 4px 14px rgba(255,69,0,0.3);}
+.sbtn:hover{opacity:.88}.sbtn:active{transform:scale(.93)}
+.sbtn:disabled{opacity:.4;cursor:not-allowed}
+.sbtn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5;
+  stroke-linecap:round;stroke-linejoin:round;}
+
+/* ══ LOADER ══ */
+.loader{display:none;flex-direction:column;align-items:center;gap:14px;padding:60px 0;}
+.lring{width:36px;height:36px;border-radius:50%;
+  border:2.5px solid var(--elevated);border-top-color:var(--fire2);
+  animation:spin .75s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ltxt{font-size:13px;color:var(--t3);}
+
+/* ══ ERROR ══ */
+.ebox{display:none;background:rgba(255,69,58,0.06);
+  border:1px solid rgba(255,69,58,0.16);border-radius:var(--r-lg);
+  padding:13px 16px;font-size:13px;color:var(--red);line-height:1.5;margin-top:4px;}
+
+/* ══ RESULTS ══ */
+#out{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+
+/* ══ SECTION LABEL ══ */
+.slbl{font-size:11px;font-weight:600;color:var(--t3);
+  text-transform:uppercase;letter-spacing:1.3px;
+  padding:0 2px;margin-bottom:-2px;margin-top:6px;}
+
+/* ══ CARD ══ */
+.card{background:var(--surface);border-radius:var(--r-xl);
+  overflow:hidden;border:1px solid var(--sep);}
+
+/* ══ PROFILE HERO ══ */
+.banner-img{width:100%;display:block;aspect-ratio:21/6;object-fit:cover;background:var(--bg2);}
+.prow{padding:12px 14px 14px;display:flex;gap:12px;align-items:flex-start;}
+.avawrap{position:relative;flex-shrink:0;margin-top:-24px;}
+.ava{width:62px;height:62px;border-radius:18px;
+  border:3px solid var(--surface);background:var(--bg2);object-fit:cover;display:block;}
+.ava-ph{width:62px;height:62px;border-radius:18px;border:3px solid var(--surface);
+  background:rgba(255,69,0,0.1);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.odot{position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;
+  background:var(--green);border:2.5px solid var(--surface);box-shadow:0 0 5px var(--green);}
+.pcol{flex:1;min-width:0;}
+.pname{font-size:19px;font-weight:800;letter-spacing:-0.4px;line-height:1.2;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.puid{font-size:11px;color:var(--t3);font-family:ui-monospace,monospace;margin-top:3px;}
+.ptags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+
+/* ══ TAGS ══ */
+.tag{padding:3px 9px;border-radius:var(--r-pill);font-size:11px;font-weight:600;}
+.tf{background:rgba(255,106,0,0.13);color:var(--ember);border:1px solid rgba(255,106,0,0.22);}
+.tg{background:rgba(255,214,10,0.1);color:var(--gold);border:1px solid rgba(255,214,10,0.18);}
+.tgr{background:rgba(48,209,88,0.09);color:var(--green);border:1px solid rgba(48,209,88,0.16);}
+.tb{background:rgba(10,132,255,0.1);color:var(--blue);border:1px solid rgba(10,132,255,0.17);}
+.tt{background:rgba(90,200,250,0.08);color:var(--teal);border:1px solid rgba(90,200,250,0.14);}
+.tp{background:rgba(191,90,242,0.09);color:var(--purple);border:1px solid rgba(191,90,242,0.16);}
+
+/* ══ STAT STRIP ══ */
+.sstrip{display:grid;border-top:1px solid var(--sep);background:var(--bg2);}
+.s3{grid-template-columns:repeat(3,1fr)}.s4{grid-template-columns:repeat(4,1fr)}
+.si{padding:12px 8px;text-align:center;border-right:1px solid var(--sep);}
+.si:last-child{border-right:none}
+.sv{font-size:15px;font-weight:700;letter-spacing:-0.2px;
+  background:linear-gradient(135deg,var(--fire2),var(--ember));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.9px;margin-top:3px;}
+
+/* ══ CARD SECTION HEADER ══ */
+.ch{padding:11px 14px 3px;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.3px;color:var(--t3);
+  border-top:1px solid var(--sep);}
+.ch:first-child{border-top:none}
+
+/* ══ INFO ROWS ══ */
+.il{padding:0;}
+.ir{display:flex;align-items:flex-start;padding:11px 14px;
+  border-bottom:1px solid var(--sep);gap:10px;min-height:44px;}
+.ir:last-child{border-bottom:none}
+.ico{font-size:14px;width:22px;text-align:center;flex-shrink:0;margin-top:0.5px;}
+.ik{font-size:13px;color:var(--t2);flex:1;padding-top:1px;line-height:1.4;}
+.iv{font-size:13px;font-weight:500;color:var(--text);
+  text-align:right;max-width:58%;word-break:break-word;line-height:1.4;}
+.iv.mono{font-family:ui-monospace,monospace;font-size:11.5px;}
+.iv.grn{color:var(--green)}.iv.red{color:var(--red)}
+.iv.gold{color:var(--gold)}.iv.blu{color:var(--blue)}
+.iv.teal{color:var(--teal)}.iv.pur{color:var(--purple)}
+.iv.ember{color:var(--ember)}
+
+/* ══ IMAGE ══ */
+.imgf{margin:8px 12px 12px;border-radius:var(--r-lg);
+  overflow:hidden;background:var(--bg2);border:1px solid var(--sep);}
+.imgf img{width:100%;display:block;object-fit:contain;background:var(--bg2);}
+.imgf.bann img{max-height:150px;object-fit:cover;}
+.imgf.outf img{max-height:200px;}
+.img-err{min-height:70px;display:flex;align-items:center;
+  justify-content:center;color:var(--t3);font-size:12px;}
+
+/* ══ ITEM GRID ══ */
+.igrid{padding:10px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:7px;}
+.iitem{background:var(--bg2);border:1px solid var(--sep2);
+  border-radius:var(--r-md);overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;text-align:center;}
+.iimg{width:100%;aspect-ratio:1;object-fit:contain;
+  background:var(--elevated);display:block;padding:6px;}
+.iph{width:100%;aspect-ratio:1;background:var(--elevated);
+  display:flex;align-items:center;justify-content:center;font-size:20px;}
+.iname{font-size:9.5px;color:var(--t2);padding:4px 5px 2px;line-height:1.3;}
+.iid{font-size:8px;color:var(--t3);font-family:monospace;padding:0 5px 4px;}
+
+/* ══ BAN ══ */
+.banw{padding:18px 14px;display:flex;gap:12px;align-items:center;}
+.banic{width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.banic.safe{background:rgba(48,209,88,0.1);}
+.banic.bad{background:rgba(255,69,58,0.1);}
+.bantitle{font-size:16px;font-weight:700;letter-spacing:-0.2px;}
+.bansub{font-size:12px;color:var(--t2);margin-top:3px;line-height:1.4;}
+
+/* ══ BP HISTORY ══ */
+.bp-scroll{overflow-x:auto;padding:10px 12px;
+  display:flex;gap:8px;scrollbar-width:none;}
+.bp-scroll::-webkit-scrollbar{display:none}
+.bp-chip{flex-shrink:0;background:var(--bg2);border:1px solid var(--sep2);
+  border-radius:var(--r-md);padding:8px 10px;text-align:center;min-width:56px;}
+.bp-ep{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.8px;}
+.bp-cnt{font-size:14px;font-weight:700;color:var(--ember);margin:2px 0;}
+.bp-max{font-size:9px;color:var(--t3);}
+.bp-chip.owned{border-color:rgba(255,149,0,0.3);background:rgba(255,149,0,0.06);}
+
+/* ══ CREDITS ══ */
+.credits{margin-top:28px;}
+.ccard{background:var(--surface);border-radius:var(--r-xl);
+  border:1px solid var(--sep);padding:18px 14px;text-align:center;}
+.capp{font-size:18px;font-weight:800;letter-spacing:-0.4px;
+  background:linear-gradient(120deg,var(--fire2),var(--ember),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:3px;}
+.cver{font-size:11px;color:var(--t3);margin-bottom:14px;}
+.csep{height:1px;background:var(--sep);margin:10px 0;}
+.crow{display:flex;align-items:center;justify-content:space-between;padding:5px 0;}
+.clbl{font-size:12px;color:var(--t3);}
+.cname{font-size:13px;font-weight:600;
+  background:linear-gradient(90deg,var(--fire2),var(--ember));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cmade{margin-top:12px;font-size:11px;color:var(--t3);line-height:1.7;}
+
+.empty-msg{padding:22px;text-align:center;color:var(--t3);font-size:13px;}
+</style>
+</head>
+<body>
+
+<div class="island-wrap">
+  <div class="island">
+    <div class="isl-left">
+      <span class="isl-flame">🔥</span>
+      <span class="isl-brand">FF Scout</span>
+    </div>
+    <div class="isl-sep"></div>
+    <div class="isl-dot"></div>
+    <div class="isl-right">
+      <div class="isl-time" id="iT">--:--:--</div>
+      <div class="isl-date" id="iD">---</div>
+    </div>
+  </div>
+</div>
+
+<button class="lang-btn" id="lbtn" onclick="toggleLang()">हिंदी</button>
+
+<div class="page">
+  <div class="hero">
+    <div class="hero-eye" id="h-eye">FreeFire Intelligence</div>
+    <div class="hero-title">Scout any<br/><span class="grad">FF Player</span></div>
+    <p class="hero-sub" id="h-sub">Full profile · All items · Rank · Guild · Ban</p>
+  </div>
+
+  <div class="sbox">
+    <div class="seg-wrap">
+      <button class="seg on" id="su" onclick="setMode('uid')">🔢 By UID</button>
+      <button class="seg" id="sn" onclick="setMode('name')">🔤 By Name</button>
+    </div>
+    <div class="irow">
+      <input class="sinput" id="q" type="text" placeholder="Enter FreeFire UID…"
+        inputmode="text" autocomplete="off" autocorrect="off"
+        autocapitalize="off" spellcheck="false"
+        onkeydown="if(event.key==='Enter')go()"/>
+      <button class="sbtn" id="gb" onclick="go()">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="ebox" id="eb"></div>
+  <div class="loader" id="ld"><div class="lring"></div><p class="ltxt" id="ltxt">Searching…</p></div>
+  <div id="out"></div>
+
+  <div class="credits">
+    <div class="ccard">
+      <div class="capp">🔥 FF Scout</div>
+      <div class="cver">v5.0 · FreeFire Player Intelligence</div>
+      <div class="csep"></div>
+      <div class="crow">
+        <span class="clbl" id="cr-dev">Developer</span>
+        <span class="cname">@Raj_op_360</span>
+      </div>
+      <div class="crow">
+        <span class="clbl" id="cr-des">Design Help</span>
+        <span class="cname">@Nabinnayak</span>
+      </div>
+      <div class="csep"></div>
+      <div class="cmade" id="cr-made">Built for the FreeFire community 🔥<br/>No login · Free · Open data</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   CONSTANTS
+══════════════════════════════════ */
+const INFO  = 'https://info.killersharmabot.online';
+const IMAGE = 'https://image.killersharmabot.online';
+const ICONS = 'https://raw.githubusercontent.com/I-SHOW-AKIRU200/AKIRU-ICONS/main/ICONS';
+
+let mode = 'uid', lang = 'en';
+
+/* ══ ICON URL ══ */
+function iconURL(id){ return `${ICONS}/${id}.png`; }
+
+/* ══ RANK HELPERS ══
+   API returns rankingName and csRankingName as formatted STRINGS.
+   We use them directly — no calculation needed! */
+function brRankColor(name){
+  if(!name) return '';
+  const n = name.toLowerCase();
+  if(n.includes('heroic')) return 'gold';
+  if(n.includes('diamond')) return 'blu';
+  if(n.includes('platinum')) return 'teal';
+  if(n.includes('gold')) return 'ember';
+  return '';
+}
+function csRankColor(name){
+  if(!name) return '';
+  const n = name.toLowerCase();
+  if(n.includes('elite')) return 'pur';
+  if(n.includes('heroic')) return 'gold';
+  if(n.includes('diamond')) return 'blu';
+  if(n.includes('platinum')) return 'teal';
+  return '';
+}
+
+/* ══ CLOCK ══ */
+function tick(){
+  const n = new Date();
+  const p = x => String(x).padStart(2,'0');
+  document.getElementById('iT').textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+  const D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('iD').textContent = `${D[n.getDay()]} ${M[n.getMonth()]} ${n.getDate()}`;
+}
+tick(); setInterval(tick, 1000);
+
+/* ══ DATE FORMAT ══ */
+function fmtIST(ts){
+  if(!ts || ts == '0' || ts == 0) return '—';
+  const d = new Date(Number(ts) * 1000);
+  return d.toLocaleString('en-IN',{
+    day:'2-digit',month:'long',year:'numeric',
+    hour:'2-digit',minute:'2-digit',second:'2-digit',
+    hour12:true,timeZone:'Asia/Kolkata'
+  }).replace(',','').replace(' am',' AM').replace(' pm',' PM') + ' (IST)';
+}
+function fmtNum(n){ return Number(n||0).toLocaleString('en-IN'); }
+function esc(s){
+  const d = document.createElement('div');
+  d.textContent = String(s||'');
+  return d.innerHTML;
+}
+function v(x){ return (x !== null && x !== undefined && x !== '' && x !== 0); }
+
+/* ══ LANG ══ */
+const LNG = {
+  en:{
+    eye:'FreeFire Intelligence',sub:'Full profile · All items · Rank · Guild · Ban',
+    uid:'🔢 By UID',nm:'🔤 By Name',ph_uid:'Enter FreeFire UID…',ph_nm:'Enter player name…',
+    srch:'Searching player…',err:'Player not found. Check UID / name.',
+    basic:'Basic Info',act:'Activity Info',overview:'Overview',
+    items:'Equipped Items',pet:'Pet Info',guild:'Guild Info',
+    leader:'Guild Leader',ban:'Ban Status',wish:'Wishlist',
+    outfit:'Character & Outfit',bnr:'Banner Image',bphist:'Booyah Pass History',
+    dev:'Developer',des:'Design Help',
+    made:'Built for the FreeFire community 🔥<br/>No login · Free · Open data',
+    clean:'Clean Account',clean_s:'No active ban on this player',
+    banned:'Account Banned',banned_s:'This player is currently banned',
+  },
+  hi:{
+    eye:'FreeFire की दुनिया',sub:'पूरी प्रोफाइल · Items · Rank · Guild · Ban',
+    uid:'🔢 UID से',nm:'🔤 नाम से',ph_uid:'FreeFire UID डालो…',ph_nm:'Player नाम लिखो…',
+    srch:'Player ढूंढ रहे हैं…',err:'Player नहीं मिला। UID / नाम check करो।',
+    basic:'Basic जानकारी',act:'Activity Info',overview:'Overview',
+    items:'Equipped Items',pet:'Pet की जानकारी',guild:'Guild Info',
+    leader:'Guild Leader',ban:'Ban Status',wish:'Wishlist',
+    outfit:'Character & Outfit',bnr:'Banner Image',bphist:'Booyah Pass History',
+    dev:'Developer',des:'Design Help',
+    made:'FreeFire community के लिए 🔥<br/>Login नहीं चाहिए · Free',
+    clean:'Clean Account',clean_s:'इस player पर कोई ban नहीं',
+    banned:'Account Banned है',banned_s:'यह player अभी banned है',
+  }
+};
+function t(k){ return (LNG[lang]||LNG.en)[k]||k; }
+
+function toggleLang(){
+  lang = lang==='en'?'hi':'en';
+  document.getElementById('lbtn').textContent = lang==='en'?'हिंदी':'English';
+  document.getElementById('h-eye').textContent = t('eye');
+  document.getElementById('h-sub').textContent = t('sub');
+  document.getElementById('su').textContent = t('uid');
+  document.getElementById('sn').textContent = t('nm');
+  document.getElementById('q').placeholder = mode==='uid'?t('ph_uid'):t('ph_nm');
+  document.getElementById('cr-dev').textContent = t('dev');
+  document.getElementById('cr-des').textContent = t('des');
+  document.getElementById('cr-made').innerHTML = t('made');
+}
+function setMode(m){
+  mode = m;
+  document.getElementById('su').classList.toggle('on', m==='uid');
+  document.getElementById('sn').classList.toggle('on', m==='name');
+  document.getElementById('q').placeholder = m==='uid'?t('ph_uid'):t('ph_nm');
+}
+
+/* ══ UI ══ */
+function showLoader(v){ document.getElementById('ld').style.display=v?'flex':'none'; document.getElementById('ltxt').textContent=t('srch'); }
+function showErr(m){ const e=document.getElementById('eb'); e.style.display=m?'block':'none'; e.textContent=m; }
+function setOut(h){ document.getElementById('out').innerHTML=h; }
+
+const pq = val => mode==='uid'
+  ? `uid=${encodeURIComponent(val)}`
+  : `name=${encodeURIComponent(val)}`;
+
+async function fetchJ(url){
+  const r = await fetch(url);
+  if(!r.ok) throw new Error(r.status);
+  return r.json();
+}
+
+/* ══ ROW ══ */
+function row(ico, key, val, cls=''){
+  if(val===null||val===undefined||val===''||val==='—'||val===0) return '';
+  return `<div class="ir">
+    <span class="ico">${ico}</span>
+    <span class="ik">${key}</span>
+    <span class="iv ${cls}">${esc(val)}</span>
+  </div>`;
+}
+function secH(t){ return `<div class="ch">${t}</div>`; }
+
+/* ══ ITEM CARD ══ */
+function icard(id, name, emoji='🎁'){
+  const img = iconURL(id);
+  return `<div class="iitem">
+    <img class="iimg" src="${img}" alt="${esc(name)}" loading="lazy"
+      onerror="this.outerHTML='<div class=\\'iph\\'>${emoji}</div>'"/>
+    <div class="iname">${esc(name)}</div>
+    <div class="iid">#${id}</div>
+  </div>`;
+}
+
+/* ══ MAIN ══ */
+async function go(){
+  const q = document.getElementById('q').value.trim();
+  if(!q){ showErr(t('err')); return; }
+  document.getElementById('gb').disabled = true;
+  showLoader(true); showErr(''); setOut('');
+
+  try{
+    // Single API call — fast!
+    const data = await fetchJ(`${INFO}/player-info?${pq(q)}`);
+    const bi   = data.basicInfo        || {};
+    const prof = data.profileInfo      || {};
+    const clan = data.clanBasicInfo    || {};
+    const cap  = data.captainBasicInfo || {};
+    const pet  = data.petInfo          || {};
+    const soc  = data.socialInfo       || {};
+    const hist = data.historyEpInfo    || [];
+    const cred = data.creditScoreInfo  || {};
+
+    /* ── EXACT FIELD MAPPING (from real API JSON) ── */
+    const uid         = bi.accountId;
+    const name_       = bi.nickname      || '—';
+    const region      = bi.region        || '—';
+    const level       = bi.level         || 0;
+    const exp         = bi.exp           || 0;
+    const expNeeded   = bi.expNeeded     || 0;
+    const levelProg   = bi.levelProgress || '';
+    const likes       = bi.liked         || 0;
+    const creditScore = cred.creditScore || bi.honor || 100;
+    const celebrity   = bi.celebrityStatus || 0;
+    const titleName   = bi.titleName     || '';
+    const sig         = soc.signature    || '';
+    const prime       = (bi.primeLevel||{}).level || 0;
+
+    // Identifiers
+    const headPic     = bi.headPic       || '';
+    const headPicName = bi.headPicName   || bi.headPic_name || '';  // "Future Hunter"
+    const bannerId    = bi.bannerId      || '';
+    const bannerName_ = bi.bannerName    || '';
+    const pinId       = bi.pinId         || '900000012';
+    const pinName_    = bi.pinName       || '';
+
+    // Activity — ALL from API as formatted strings
+    const ob          = bi.releaseVersion || '—';          // "OB53" direct string
+    const badgeCnt    = bi.badgeCnt       || 0;            // Current BP badges = 39
+    const brRankName_ = bi.rankingName    || 'Unranked';   // "Heroic III (4411)" ✓
+    const brRankPts   = bi.rankingPoints  || 0;
+    const csRankName_ = bi.csRankingName  || 'Unranked';   // "Elite Heroic (37 Star)" ✓
+    const csRankPts   = bi.csRankingPoints|| 0;
+    const maxRank     = bi.maxRank        || 0;            // BR max rank this season
+    const rank        = bi.rank           || 0;
+    const seasonId    = bi.seasonId       || 0;
+    const showBr      = bi.showBrRank !== false;
+    const showCs      = bi.showCsRank !== false;
+    const showRankV   = soc.rankShow      || '—';          // "CsRanked" from socialInfo ✓
+    const createdAt   = bi.createAt       || 0;
+    const lastLogin   = bi.lastLoginAt    || 0;
+    const banStatus   = bi.banStatus      || '';           // "Not Banned"
+
+    // Weapon skins — use Names array directly!
+    const weaponIds   = bi.weaponSkinShows   || [];
+    const weaponNames = bi.weaponSkinNames   || [];
+    const gunId       = bi.equippedGunId     || '';
+    const gunName_    = bi.equippedGunName   || 'Not Found';
+    const animId      = bi.equippedAnimationId   || '';
+    const animName_   = bi.equippedAnimationName || 'Not Found';
+
+    // Overview — from profileInfo and socialInfo
+    const avatarId    = prof.avatarId       || '102000007';
+    const avatarName_ = prof.avatarName     || '—';         // "Orion" (character)
+    const clothes     = prof.clothes        || [];
+    const clothNames  = prof.clothesNames   || [];
+    const skillsStr   = prof.equippedSkillsNames || '';     // "Orion (Active), Miguel (Passive)..." ✓
+    const timeActive  = soc.timeActive      || '—';         // "Night" ✓
+    const timeOnline  = soc.timeOnline      || '—';         // "Weekend" ✓
+    const modePrefer  = soc.modePrefer      || '—';         // "CasualMode" ✓
+    const langVal     = soc.language        || '—';         // "ChineseTraditional" ✓
+    const battleCard  = bi.equippedBattleCardName || 'Not Equipped';
+    const transformAnim = bi.transformAnimName || 'Not Found';
+
+    // Pet — full details from petInfo
+    const petEquipped = pet.isSelected === true || pet.isEquipped === true;
+    const petId       = pet.id           || 0;
+    const petSkinId   = pet.skinId       || 0;
+    const petName_    = pet.petName      || '—';
+    const petSkill    = pet.skillName    || '—';
+    const petSkin     = pet.skinName     || '—';
+    const petExp_     = pet.exp          || 0;
+    const petLevel_   = pet.level        || 0;
+    const petSelSkill = pet.selectedSkillId || 0;
+
+    // Image URLs
+    const safeName = encodeURIComponent(name_);
+    const safeClan = encodeURIComponent(clan.clanName||'');
+    const frame    = prime===8?'true':'false';
+    const bannerURL = `${IMAGE}/banner-image?headPic=${headPic}&bannerId=${bannerId}&name=${safeName}&level=${level}&guild=${safeClan}&pinId=${pinId}&celebrity=${celebrity}&primeLevel=${prime}&frame=${frame}`;
+    const outfitURL = `${IMAGE}/outfit-image?avatar_id=${avatarId}&clothes=${[...clothes,...weaponIds].join(',')}`;
+
+    // Parallel secondary calls
+    const [banR, wishR] = await Promise.allSettled([
+      fetchJ(`${INFO}/bancheck?${pq(q)}`),
+      fetchJ(`${INFO}/wishlist?${pq(q)}`)
+    ]);
+    const banData  = banR.status==='fulfilled'  ? banR.value  : null;
+    const wishData = wishR.status==='fulfilled' ? wishR.value : null;
+
+    // Leader
+    let leaderData = null;
+    if(cap.accountId && cap.accountId !== uid){
+      try{ leaderData = await fetchJ(`${INFO}/player-info?uid=${cap.accountId}`); }catch{}
+    } else if(cap.accountId === uid){
+      leaderData = data; // same person is leader
+    }
+
+    /* ════════════ BUILD UI ════════════ */
+    let H = '';
+
+    /* ── PROFILE CARD ── */
+    H += `
+    <div class="slbl">${t('basic')}</div>
+    <div class="card">
+      <img class="banner-img" src="${bannerURL}" alt="banner" loading="lazy"
+        onerror="this.style.display='none'"/>
+      <div class="prow">
+        <div class="avawrap">
+          <img class="ava" src="${outfitURL}" alt="avatar" loading="lazy"
+            onerror="this.outerHTML='<div class=\\'ava-ph\\'>🎮</div>'"/>
+          <div class="odot"></div>
+        </div>
+        <div class="pcol">
+          <div class="pname" title="${esc(name_)}">${esc(name_)}</div>
+          <div class="puid">UID: ${uid} · ${region}</div>
+          <div class="ptags">
+            <span class="tag tf">⭐ Lv.${level}</span>
+            ${prime?`<span class="tag tg">👑 Prime ${prime}</span>`:''}
+            ${celebrity?`<span class="tag tt">✨ Celebrity</span>`:''}
+            ${brRankPts?`<span class="tag tb">🏆 ${brRankName_.split(' (')[0]}</span>`:''}
+            ${clan.clanName?`<span class="tag tgr">🏰 ${esc(clan.clanName)}</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="sstrip s4">
+        <div class="si"><div class="sv">${fmtNum(likes)}</div><div class="sl">Likes</div></div>
+        <div class="si"><div class="sv">${fmtNum(exp)}</div><div class="sl">EXP</div></div>
+        <div class="si"><div class="sv">${badgeCnt||'—'}</div><div class="sl">BP Badges</div></div>
+        <div class="si"><div class="sv">${prime||'—'}</div><div class="sl">Prime</div></div>
+      </div>
+
+      ${secH(t('basic'))}
+      <div class="il">
+        ${row('🎮','Name',name_)}
+        ${row('🆔','UID',uid,'mono')}
+        ${row('🌍','Region',region)}
+        ${row('⭐','Level',`${level} (Exp: ${fmtNum(exp)})`)}
+        ${levelProg?row('📊','Level Progress',levelProg):''}
+        ${row('❤️','Likes',fmtNum(likes))}
+        ${row('⚖️','Honor Score',creditScore)}
+        ${row('✨','Celebrity',celebrity?'True':'False',celebrity?'gold':'')}
+        ${titleName?row('🏷️','Title Name',titleName):''}
+        ${sig?row('💬','Signature',sig):''}
+        ${banStatus?row('🛡️','Account Status',banStatus,banStatus.includes('Not')?'grn':'red'):''}
+      </div>
+
+      ${secH(t('act'))}
+      <div class="il">
+        ${ob!=='—'?row('🔄','Most Recent OB',ob):''}
+        ${row('🥇','Current BP Badges',badgeCnt)}
+        ${seasonId?row('🗓️','Season',seasonId):''}
+        ${row('🏆','BR Rank',brRankName_,brRankColor(brRankName_))}
+        ${row('🎯','CS Rank',csRankName_,csRankColor(csRankName_))}
+        ${row('👁️','Show Rank',showRankV)}
+        ${row('📺','Show BR Rank',showBr?'True':'False')}
+        ${row('📺','Show CS Rank',showCs?'True':'False')}
+        ${createdAt?row('📅','Created At',fmtIST(createdAt)):''}
+        ${lastLogin?row('🕐','Last Login',fmtIST(lastLogin)):''}
+        ${row('🎖️','Total Badges',badgeCnt)}
+      </div>
+
+      ${secH(t('overview'))}
+      <div class="il">
+        ${headPicName?row('👤','Avatar Name',headPicName):''}
+        ${avatarName_!=='—'?row('🧬','Character',avatarName_):''}
+        ${bannerName_?row('🖼️','Banner Name',bannerName_):''}
+        ${pinName_?row('📌','Pin Name',pinName_):''}
+        ${timeActive!=='—'?row('⏰','Active Time',timeActive):''}
+        ${timeOnline!=='—'?row('📆','Active Days',timeOnline):''}
+        ${modePrefer!=='—'?row('🎮','Mode Prefer',modePrefer):''}
+        ${skillsStr?row('⚡','Equipped Skills',skillsStr):''}
+        ${langVal!=='—'?row('🌐','Language',langVal):''}
+        ${row('🃏','Battle Card',battleCard)}
+        ${gunName_!=='Not Found'?row('🔫','Equipped Gun',gunName_):''}
+        ${animName_!=='Not Found'?row('💫','Animation',animName_):''}
+        ${transformAnim!=='Not Found'?row('🔄','Transform Anim',transformAnim):''}
+      </div>
+    </div>`;
+
+    /* ── EQUIPPED ITEMS ── */
+    const allItems = [];
+    clothes.forEach((id,i)=>{ allItems.push({id,name:clothNames[i]||('Item #'+id),emoji:'👕'}); });
+    weaponIds.forEach((id,i)=>{ allItems.push({id,name:weaponNames[i]||('Weapon #'+id),emoji:'🔫'}); });
+    if(allItems.length){
+      H += `
+      <div class="slbl">${t('items')}</div>
+      <div class="card">
+        <div class="igrid">
+          ${allItems.map(x=>icard(x.id,x.name,x.emoji)).join('')}
+        </div>
+      </div>`;
+    }
+
+    /* ── PET ── */
+    if(petId){
+      H += `
+      <div class="slbl">${t('pet')}</div>
+      <div class="card">
+        <div class="igrid">
+          ${icard(petId, petName_,'🐾')}
+          ${petSkinId?icard(petSkinId, petSkin,'🎨'):''}
+        </div>
+        <div class="il">
+          ${row('🐾','Equipped',petEquipped?'Yes':'No',petEquipped?'grn':'')}
+          ${row('🐶','Pet Name',petName_)}
+          ${row('🎨','Pet Skin',petSkin)}
+          ${row('⚡','Skill',petSkill)}
+          ${row('✨','Pet Exp',fmtNum(petExp_))}
+          ${row('⭐','Pet Level',petLevel_)}
+        </div>
+      </div>`;
+    }
+
+    /* ── GUILD ── */
+    if(clan.clanId||clan.clanName){
+      H += `
+      <div class="slbl">${t('guild')}</div>
+      <div class="card">
+        <div class="il">
+          ${row('🏰','Guild Name',clan.clanName)}
+          ${row('🆔','Guild ID',clan.clanId,'mono')}
+          ${row('📊','Guild Level',clan.clanLevel)}
+          ${row('👥','Live Members',clan.memberNum&&clan.capacity?`${clan.memberNum}/${clan.capacity}`:(clan.memberNum||'—'))}
+          ${clan.createAt?row('📅','Guild Created',fmtIST(clan.createAt)):''}
+        </div>
+      </div>`;
+    }
+
+    /* ── BANNER IMAGE ── */
+    H += `
+    <div class="slbl">${t('bnr')}</div>
+    <div class="card">
+      <div class="imgf bann">
+        <img src="${bannerURL}" alt="Banner" loading="lazy"
+          onerror="this.outerHTML='<div class=\\'img-err\\'>Unavailable</div>'"/>
+      </div>
+    </div>`;
+
+    /* ── OUTFIT ── */
+    H += `
+    <div class="slbl">${t('outfit')}</div>
+    <div class="card">
+      <div class="imgf outf">
+        <img src="${outfitURL}" alt="Outfit" loading="lazy"
+          onerror="this.outerHTML='<div class=\\'img-err\\'>Unavailable</div>'"/>
+      </div>
+    </div>`;
+
+    /* ── BAN ── */
+    if(banData){
+      const bS = banData.banStatus||{};
+      const isBanned = bS.isProcessed===true||bS.isBanned===true||bS.status===1;
+      H += `
+      <div class="slbl">${t('ban')}</div>
+      <div class="card">
+        <div class="banw">
+          <div class="banic ${isBanned?'bad':'safe'}">${isBanned?'🚫':'✅'}</div>
+          <div>
+            <div class="bantitle" style="color:${isBanned?'var(--red)':'var(--green)'}">
+              ${isBanned?t('banned'):t('clean')}
+            </div>
+            <div class="bansub">${isBanned?t('banned_s'):t('clean_s')}</div>
+            ${bS.banPeriod?`<div style="font-size:11px;color:var(--red);margin-top:4px">Period: ${bS.banPeriod}</div>`:''}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ── WISHLIST ── */
+    // Real wishlist structure: {player:{...}, wishlist:[{item_id, name, icon, description, release_time}]}
+    const wishRaw = wishData?.wishlist || [];
+    const wishes = wishRaw.map(item => ({
+      id:   item.item_id || item.itemId || item.id || 0,
+      name: item.name || item.itemName || ('Item #' + (item.item_id||item.id||'?')),
+      icon: item.icon || ''
+    })).filter(x => x.id);
+
+    H += `
+    <div class="slbl">${t('wish')}${wishes.length?' · '+wishes.length+' items':''}</div>
+    <div class="card">
+      ${wishes.length
+        ?`<div class="igrid">${wishes.map(w=>icard(w.id,w.name||('Item #'+w.id),'🎁')).join('')}</div>`
+        :`<div class="empty-msg">Wishlist is empty</div>`}
+    </div>`;
+
+    /* ── BP HISTORY ── */
+    if(hist.length){
+      H += `
+      <div class="slbl">${t('bphist')}</div>
+      <div class="card">
+        <div class="bp-scroll">
+          ${hist.slice(0,20).map(ep=>`
+            <div class="bp-chip${ep.ownedPass?' owned':''}">
+              <div class="bp-ep">EP ${ep.epEventId}</div>
+              <div class="bp-cnt">${ep.badgeCnt||0}</div>
+              <div class="bp-max">/ ${ep.maxLevel||100}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    /* ── GUILD LEADER ── */
+    if(leaderData){
+      const li  = leaderData.basicInfo        || {};
+      const lc  = leaderData.clanBasicInfo    || {};
+      const lp  = leaderData.profileInfo      || {};
+      const lso = leaderData.socialInfo       || {};
+      const lw  = li.weaponSkinShows          || [];
+      const lcl = lp.clothes                  || [];
+      const lPrime = (li.primeLevel||{}).level || 0;
+      const lFrame = lPrime===8?'true':'false';
+      const lAvId  = lp.avatarId || '102000007';
+      const lOutfit = `${IMAGE}/outfit-image?avatar_id=${lAvId}&clothes=${[...lcl,...lw].join(',')}`;
+      const lBanner = `${IMAGE}/banner-image?headPic=${li.headPic||''}&bannerId=${li.bannerId||''}&name=${encodeURIComponent(li.nickname||'')}&level=${li.level||0}&guild=${encodeURIComponent(lc.clanName||'')}&pinId=${li.pinId||'900000012'}&celebrity=${li.celebrityStatus||0}&primeLevel=${lPrime}&frame=${lFrame}`;
+
+      H += `
+      <div class="slbl">${t('leader')}</div>
+      <div class="card">
+        <div class="prow" style="padding-top:14px;">
+          <div class="avawrap" style="margin-top:0">
+            <img class="ava" src="${lOutfit}" alt="leader" loading="lazy"
+              onerror="this.outerHTML='<div class=\\'ava-ph\\'>👑</div>'"/>
+          </div>
+          <div class="pcol">
+            <div class="pname">${esc(li.nickname||'—')}</div>
+            <div class="puid">UID: ${li.accountId||'—'} · ${li.region||'—'}</div>
+            <div class="ptags">
+              <span class="tag tf">⭐ Lv.${li.level||'—'}</span>
+              ${lPrime?`<span class="tag tg">👑 Prime ${lPrime}</span>`:''}
+              ${li.rankingName?`<span class="tag tb">🏆 ${(li.rankingName||'').split(' (')[0]}</span>`:''}
+            </div>
+          </div>
+        </div>
+        <div class="il" style="border-top:1px solid var(--sep)">
+          ${row('🆔','Leader UID',li.accountId,'mono')}
+          ${row('⭐','Level',`${li.level||'—'} (Exp: ${fmtNum(li.exp||0)})`)}
+          ${row('🌍','Region',li.region||'—')}
+          ${row('🔄','Most Recent OB',li.releaseVersion||'—')}
+          ${row('🏆','BR Rank',li.rankingName||'Unranked',brRankColor(li.rankingName))}
+          ${row('🎯','CS Rank',li.csRankingName||'Unranked',csRankColor(li.csRankingName))}
+          ${row('🥇','BP Badges',li.badgeCnt||'—')}
+          ${row('🏷️','Title',li.titleName||'—')}
+          ${row('💬','Signature',lso.signature||'—')}
+          ${li.lastLoginAt?row('🕐','Last Login',fmtIST(li.lastLoginAt)):''}
+          ${li.createAt?row('📅','Created At',fmtIST(li.createAt)):''}
+        </div>
+        <div style="padding:0 12px 12px">
+          <div class="ch" style="border-top:none;padding-left:0">Leader Banner</div>
+          <div class="imgf bann">
+            <img src="${lBanner}" alt="Leader Banner" loading="lazy"
+              onerror="this.outerHTML='<div class=\\'img-err\\'>Unavailable</div>'"/>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    setOut(H);
+
+  }catch(e){
+    console.error(e);
+    showErr(t('err'));
+  }finally{
+    showLoader(false);
+    document.getElementById('gb').disabled = false;
+  }
+}
+</script>
+</body>
+</html>
